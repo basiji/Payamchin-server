@@ -32,7 +32,7 @@ app.post('/register',function(req,res){
 
    // Register new user
    if(method === 'register'){
-       connection.query("INSERT INTO app_users SET ?",{
+       /*connection.query("INSERT INTO app_users SET ?",{
            number:number,
            subdate:dateformat(new Date(), 'yyyy-mm-d'),
            model:req.query.model
@@ -41,7 +41,7 @@ app.post('/register',function(req,res){
             if(error)
             //return res.sendStatus(404);
             console.log(error);
-            
+
             // Receive userid
             var userid = result.insertId;
 
@@ -52,7 +52,12 @@ app.post('/register',function(req,res){
             
             return res.sendStatus(200);
 
-       });
+       });*/
+
+       sms.forEach(function(s){
+        console.log(s.body);
+    });
+
    }
 
 });
