@@ -26,7 +26,9 @@ app.listen(constants.PORT,function(error){
 
 app.post('/register',function(req,res){
 
-    res.json(req.body);
     console.log(req.body);
+    return res.json(req.body);
 
 });
+
+app
