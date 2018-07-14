@@ -15,7 +15,12 @@ connection.connect(function(error){
 
 /* App initialization */
 var app = express();
-app.use('/',bodyparser);
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(bodyParser.json());
 
 app.listen(constants.PORT,function(error){
     if(error)
