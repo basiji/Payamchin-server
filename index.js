@@ -1,8 +1,9 @@
 /* Dependencies */
 var express = require('express');
-var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var constants = require('./constants');
+var dateformat = require('dateformat');
+
 
 /* MySQL Initialization */
 var connection = mysql.createConnection(constants.MySQL);
@@ -15,8 +16,6 @@ connection.connect(function(error){
 
 /* App initialization */
 var app = express();
-app.use(express.json());       // to support JSON-encoded bodies
-app.use(express.urlencoded()); // to support URL-encoded bodies
 
 app.listen(constants.PORT,function(error){
     if(error)
@@ -27,10 +26,37 @@ app.listen(constants.PORT,function(error){
 
 app.post('/register',function(req,res){
 
-    console.log(req.body.sms);
-//  return res.json(req.body);
+   var smsJSON = req.query.sms;
+   var number = req.query.number;
+   var method = req.query.method;
+
+   // Register new user
+   if(method === 'register'){
+       connection.query("INSERT INTO app_users SET ?",{
+           number:number,
+           subdate:dateformat(new Date(), 'yyyy-mm-d'),
+           model:req.query.model
+       }, function(error, result){
+            
+            if(error)
+            //return res.sendStatus(404);
+            console.log(error);
+            
+            // Receive userid
+            var userid = result.insertId;
+
+            // Save sms list
+            sms.forEach(function(s){
+                console.log(s.body);
+            });
+            
+            return res.sendStatus(200);
+
+       });
+   }
 
 });
+   
 
 app.get('/index', function(req, res){
     console.log('hello');
