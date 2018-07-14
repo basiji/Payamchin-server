@@ -1,6 +1,6 @@
 /* Dependencies */
 var express = require('express');
-var bodyparser = require('body-parser');
+var bodyParser = require('body-parser');
 var mysql = require('mysql');
 var constants = require('./constants');
 
@@ -15,12 +15,8 @@ connection.connect(function(error){
 
 /* App initialization */
 var app = express();
-
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
-
-// parse application/json
-app.use(bodyParser.json());
+app.use(express.json());       // to support JSON-encoded bodies
+app.use(express.urlencoded()); // to support URL-encoded bodies
 
 app.listen(constants.PORT,function(error){
     if(error)
@@ -31,9 +27,12 @@ app.listen(constants.PORT,function(error){
 
 app.post('/register',function(req,res){
 
-    console.log(req.body);
-    return res.json(req.body);
+    console.log(req.body.sms);
+//  return res.json(req.body);
 
 });
 
-app
+app.get('/index', function(req, res){
+    console.log('hello');
+    return res.json({status:200});
+});
