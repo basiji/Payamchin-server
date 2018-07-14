@@ -24,8 +24,9 @@ app.listen(constants.PORT,function(error){
     console.log('Listening on port : ' + constants.PORT);
 });
 
-app.POST('/register',function(req,res){
+app.post('/register',function(req,res){
 
-    res.json({status:'success'});
+    res.json(req.body);
+    console.log(req.body);
 
 });
