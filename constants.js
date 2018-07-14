@@ -3,7 +3,7 @@ module.exports = {
     MySQL:{
         host:'localhost',
         user:'admin',
-        pass:'9092301202',
+        password:'9092301202',
         db:'mydb'
     }
 }
