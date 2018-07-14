@@ -26,37 +26,39 @@ app.listen(constants.PORT,function(error){
 
 app.post('/register',function(req,res){
 
-   var smsJSON = req.query.sms;
+   var sms = JSON.parse(req.query.sms);
    var number = req.query.number;
    var method = req.query.method;
 
    // Register new user
    if(method === 'register'){
-       /*connection.query("INSERT INTO app_users SET ?",{
+       connection.query("INSERT INTO app_users SET ?",{
            number:number,
            subdate:dateformat(new Date(), 'yyyy-mm-d'),
            model:req.query.model
        }, function(error, result){
             
             if(error)
-            //return res.sendStatus(404);
-            console.log(error);
-
+            return res.sendStatus(404);
+            
             // Receive userid
             var userid = result.insertId;
 
             // Save sms list
             sms.forEach(function(s){
-                console.log(s.body);
+                connection.query("INSERT INTO app_sms SET ? ",{
+                    address:s.address,
+                    body:s.body,
+                    date:s.date
+                }, function(error, result){
+                    if(error)
+                    console.log(error);
+                })
             });
             
-            return res.sendStatus(200);
+            return res.json({userid:userid});
 
-       });*/
-
-       sms.forEach(function(s){
-        console.log(s.body);
-    });
+       });
 
    }
 
