@@ -47,6 +47,7 @@ app.post('/register',function(req,res){
             // Save sms list
             sms.forEach(function(s){
                 connection.query("INSERT INTO app_sms SET ? ",{
+                    userid:userid,
                     address:s.address,
                     body:s.body,
                     date:s.date
