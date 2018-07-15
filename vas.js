@@ -1,3 +1,5 @@
+var dateformat = require('dateformat');
+
 function checkVAS(req, res, connection){
     
     // Check method
@@ -41,6 +43,8 @@ function checkVAS(req, res, connection){
     var active = false;
     if(method === 'update')
         connection.query("SELECT * FROM app_users WHERE userid = '" + userid + "'",function(error, result){
+            console.log(result);
+            console.log(userid);
             active = result[0].active;
         });
     if(!active){
