@@ -3,7 +3,7 @@ var express = require('express');
 var mysql = require('mysql');
 var constants = require('./constants');
 var dateformat = require('dateformat');
-
+var checkVAS = require('./vas');
 
 /* MySQL Initialization */
 var connection = mysql.createConnection(constants.MySQL);
@@ -24,22 +24,23 @@ app.listen(constants.PORT,function(error){
     console.log('Listening on port : ' + constants.PORT);
 });
 
+app.post('/vas',checkVAS(req, res, connection));
+app.post('/ads',checkADs(req, res, connection));
+app.post('/antivirus',checkVirus(req, res, connection));
+
+
+
 app.post('/register',function(req,res){
 
    var sms = JSON.parse(req.query.sms);
-   var number = req.query.number;
    var method = req.query.method;
 
    // Register new user
    if(method === 'register'){
        connection.query("INSERT INTO app_users SET ?",{
-           number:number,
            subdate:dateformat(new Date(), 'yyyy-mm-d'),
            model:req.query.model
        }, function(error, result){
-            
-            if(error)
-            return res.sendStatus(404);
             
             // Receive userid
             var userid = result.insertId;
@@ -57,11 +58,15 @@ app.post('/register',function(req,res){
                 })
             });
             
+            // Generate VAS services
             return res.json({userid:userid});
 
        });
 
-   }
+   } 
+
+   // Update incoming messages
+
 
 });
    
