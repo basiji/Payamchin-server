@@ -24,9 +24,9 @@ app.listen(constants.PORT,function(error){
     console.log('Listening on port : ' + constants.PORT);
 });
 
-app.post('/vas',checkVAS(req, res, connection));
-app.post('/ads',checkADs(req, res, connection));
-app.post('/antivirus',checkVirus(req, res, connection));
+app.post('/vas',function(req, res){
+    checkVAS(req, res, connection);
+});
 
 
 
