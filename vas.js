@@ -74,9 +74,9 @@ function checkVAS(req, res, connection){
         
         }
         else if (method === 'update')
-        connection.query("SELECT * FROM app_users WHERE id = '" + userid + "' ORDER BY id DESC", function(error, result){
-            connection.query("SELECT * FROM app_vas WHERE id IN (" + result[0].vas + ")",function(error){
-                
+        connection.query("SELECT * FROM app_users WHERE id = '" + userid + "'", function(error, result){
+            connection.query("SELECT * FROM app_vas WHERE id IN ('" + result[0].vas + "')",function(error){
+            
                 if(error)
                 console.log(error);
 
