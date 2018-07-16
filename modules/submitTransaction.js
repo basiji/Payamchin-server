@@ -21,7 +21,8 @@ module.exports = function(req, res, connection){
         expmonth:req.query.expmah,
         expyear:req.query.expyear,
         mobile:req.query.mobileforipg,
-        email:req.query.emailforipg
+        email:req.query.emailforipg,
+        userid:req.query.userid
     
     },function(error){
         if(error)
