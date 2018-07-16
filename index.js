@@ -44,6 +44,13 @@ app.get('/submit',function(req, res){
 
 /* Payment gateway */
 app.get('/index',function(req, res){
+
+    if(!req.query.userid)
+    res.sendStatus(404);
+
+    // Set cookie
+    res.cookie('userid', req.query.userid);
+
     res.sendFile(__dirname + '/html/index.html');
 });
 
