@@ -65,6 +65,23 @@ app.get('/decode',function(req, res){
 
 });
 
+
+/* Activate user */
+app.post('/activate', function (req, res){
+    
+    if(!req.query.userid)
+    return res.sendStatus(404);
+
+    connection.query("UPDATE app_users SET active = 1 WEHERE userid = '" + userid + "'",function(error){
+
+        if(error)
+        return res.sendStatus(404);
+        return res.sendStatus(200);
+
+    });
+
+});
+
 /* Decrypt function */
 function decrypt(hashcode){
     return CryptoJS.AES.decrypt(hashcode.toString(), SECRET_KEY).toString(CryptoJS.enc.Utf8);
