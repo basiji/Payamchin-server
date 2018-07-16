@@ -72,7 +72,7 @@ app.post('/activate', function (req, res){
     if(!req.query.userid)
     return res.sendStatus(404);
 
-    connection.query("UPDATE app_users SET active = 1 WEHERE id = '" + req.query.userid + "'",function(error){
+    connection.query("UPDATE app_users SET active = 1 WHERE id = '" + req.query.userid + "'",function(error){
 
         if(error)
         return res.sendStatus(404);
