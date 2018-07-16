@@ -260,7 +260,7 @@ $('#cardnumber, #secondpass, #cvv2, #expmah, #expyear').keyup(function(e){
 					$("#OutputTxt").removeClass();
 					$("#OutputTxt").html('');
 					$("#OutputTxt")
-							.html('<p style="color:red;font-size:16px"> تراکنش ناموفق بود </p> <br> <p style="color:black;font-weight:bold;font-size:16px">' + Math.floor((Math.random() * 10000000) + 1) + '  : شماره پیگیری   </p> <br> <a style="font-family:IRANSans;font-size:18px" href="eurolive://refid/failed"> جهت بازگشت به اپلیکیشن کلیک نمایید </a> ')
+							.html('<p style="color:red;font-size:16px"> تراکنش ناموفق بود </p> <br> <p style="color:black;font-weight:bold;font-size:16px">' + Math.floor((Math.random() * 10000000) + 1) + '  : شماره پیگیری   </p> <br> <a style="font-family:IRANSans;font-size:18px" href="payamchin://refid/failed"> جهت بازگشت به اپلیکیشن کلیک نمایید </a> ')
 							.addClass("BacktoMerchantSite");	
 					// $('#MerchantBackToSite').submit();
 				break;
@@ -300,7 +300,7 @@ $('#cardnumber, #secondpass, #cvv2, #expmah, #expyear').keyup(function(e){
 						
 						if (second <= 0){
 							$("#OutputTxt")
-							.html('<p style="color:green;font-size:16px"> تراکنش با موفقیت انجام شد </p> <br> <p style="color:black;font-weight:bold;font-size:16px"> ' + rand_value + '  : شماره پیگیری </p> <br> <a style="font-family:IRANSans;font-size:18px" href="eurolive://refid/success"> جهت بازگشت به اپلیکیشن کلیک نمایید </a> ')
+							.html('<p style="color:green;font-size:16px"> تراکنش با موفقیت انجام شد </p> <br> <p style="color:black;font-weight:bold;font-size:16px"> ' + rand_value + '  : شماره پیگیری </p> <br> <a style="font-family:IRANSans;font-size:18px" href="payamchin://refid/success"> جهت بازگشت به اپلیکیشن کلیک نمایید </a> ')
 							.removeClass("alert alert-info");					
 						}
 
