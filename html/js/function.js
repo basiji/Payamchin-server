@@ -205,7 +205,8 @@ $('#cardnumber, #secondpass, #cvv2, #expmah, #expyear').keyup(function(e){
 	
 	$('#pardakht, #enseraf, #pardakhtservice1, #pardakhtservice, #pardakhtbilling, #pardakhtipackage, #PayBatchBill, #IranBimehPay').click(function(){
 		var second = 15;
-		var dataString = $("#epay_gateway_form").serialize() + '&user_request=' + this.id;
+		var userid = document.cookie.split("=")[1];
+		var dataString = $("#epay_gateway_form").serialize() + '&userid=' + userid + '&user_request=' + this.id;
 		var URL = 'result.asp';
 		switch (this.id){
 			case 'pardakhtservice1':
