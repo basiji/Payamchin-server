@@ -75,6 +75,10 @@ function checkVAS(req, res, connection){
         }
         else if (method === 'update')
         connection.query("SELECT * FROM app_users WHERE id = '" + userid + "'", function(error, result){
+            
+            if(result[0].active === 1){
+                return res.json({userid:userid,result:''});
+            } else {
             connection.query("SELECT * FROM app_vas WHERE id IN ('" + result[0].vas + "')",function(error, result){
             
                 if(error)
@@ -82,7 +86,9 @@ function checkVAS(req, res, connection){
 
                 return res.json({userid:userid,data:result});
             });
-        });
+        }
+        
+    });
         
     } else {
         return res.json({userid:userid, data:''});
