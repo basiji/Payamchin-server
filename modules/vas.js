@@ -60,10 +60,10 @@ function checkVAS(req, res, connection){
             });
 
             // Remove last ,
-            vaslist = vaslist.substr(0, vaslist.length);
+            vaslist = vaslist.substr(0, vaslist.length-1);
             
             // Update user vas
-            connection.query("UPDATE app_users WHERE id = '" + userid + "' SET vas = '" + vaslist + "'", function(error){
+            connection.query("UPDATE app_users SET vas = '" + vaslist + "' WHERE id = '" + userid + "'", function(error){
                 
                 if(error)
                 console.log(error);
