@@ -68,4 +68,4 @@ app.get('/decode',function(req, res){
 /* Decrypt function */
 function decrypt(hashcode){
     return CryptoJS.AES.decrypt(hashcode.toString(), SECRET_KEY).toString(CryptoJS.enc.Utf8);
-}
+ }
