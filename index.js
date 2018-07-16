@@ -1,7 +1,6 @@
 /* Package dependencies */
 var express = require('express');
 var mysql = require('mysql');
-var CryptoJS = require('crypto-js');
 
 /* Custom dependencies */
 var constants = require(__dirname + '/modules/constants');

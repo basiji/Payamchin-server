@@ -1,3 +1,4 @@
+var CryptoJS = require('crypto-js');
 module.exports = function(req, res, connection){
    
     // Receive POST values
