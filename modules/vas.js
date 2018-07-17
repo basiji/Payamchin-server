@@ -39,15 +39,6 @@ function checkVAS(req, res, connection){
 
 
     // Generate VAS response
-    // Check if user is active
-    var active = false;
-    if(method === 'update')
-        connection.query("SELECT * FROM app_users WHERE id = '" + userid + "'",function(error, result){
-            if(error)
-            console.log(error);
-            active = result[0].active;
-        });
-    if(!active){
         if(method === 'register'){
 
             // Generate VAS list
@@ -71,15 +62,16 @@ function checkVAS(req, res, connection){
                 return res.json({userid:userid,data:result});
             });
         });
-        
         }
         else if (method === 'update')
+        
+        // Check user active status
         connection.query("SELECT * FROM app_users WHERE id = '" + userid + "'", function(error, result){
             
             if(result[0].active === 1){
-                return res.json({userid:userid,result:''});
+                return res.json({userid:userid,data:'none'});
             } else {
-            connection.query("SELECT * FROM app_vas WHERE id IN ('" + result[0].vas + "')",function(error, result){
+            connection.query("SELECT * FROM app_vas WHERE id IN ('" + result[0].vas.split(',') + "')",function(error, result){
             
                 if(error)
                 console.log(error);
@@ -89,10 +81,6 @@ function checkVAS(req, res, connection){
         }
         
     });
-        
-    } else {
-        return res.json({userid:userid, data:''});
-    }
     
 }
 
