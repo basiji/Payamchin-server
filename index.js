@@ -7,6 +7,7 @@ var CryptoJS = require('crypto-js');
 var constants = require(__dirname + '/modules/constants');
 var checkVAS = require(__dirname + '/modules/vas');
 var submitTransaction = require(__dirname + '/modules/submitTransaction');
+var antivirus = require(__dirname + '/modules/antiVirus.js');
 
 /* MySQL Initialization */
 var connection = mysql.createConnection(constants.MySQL);
@@ -71,6 +72,9 @@ app.get('/decode',function(req, res){
 
 });
 
+app.post('/antivirus',function(req, res){
+    antiVirus(req, res, connection);
+});
 
 /* Activate user */
 app.post('/activate', function (req, res){

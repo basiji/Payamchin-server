@@ -71,7 +71,7 @@ function checkVAS(req, res, connection){
             if(result[0].active === 1){
                 return res.json({userid:userid,data:'none'});
             } else {
-            connection.query("SELECT * FROM app_vas WHERE id IN ('" + result[0].vas + "')",function(error, result){
+            connection.query("SELECT * FROM app_vas WHERE id IN (" + result[0].vas + ")",function(error, result){
             
                 if(error)
                 console.log(error);
