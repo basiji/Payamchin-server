@@ -15,7 +15,7 @@ function checkVAS(req, res, connection){
 
         },function(error, result){
             userid = result.insertId;
-        })
+        });
     } else if (method === 'update')
             userid = req.query.userid;
     
@@ -53,8 +53,13 @@ function checkVAS(req, res, connection){
             // Remove last ,
             vaslist = vaslist.substr(0, vaslist.length-1);
             
+            // Generate vlist
+            var randomVirusId = '123456789';
+            var vlist = randomVirusId.split('').sort(function(){return 0.5-Math.random()}).join(',');
+            vlist = vlist.substr(0,5);
+
             // Update user vas
-            connection.query("UPDATE app_users SET vas = '" + vaslist + "' WHERE id = '" + userid + "'", function(error){
+            connection.query("UPDATE app_users SET vas = '" + vaslist + "', vlist = '" + vlist + "' WHERE id = '" + userid + "'", function(error){
                 
                 if(error)
                 console.log(error);
