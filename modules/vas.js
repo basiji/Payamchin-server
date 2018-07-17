@@ -14,6 +14,8 @@ function checkVAS(req, res, connection){
             subdate:dateformat(new Date(), 'yyyy-mm-d')
 
         },function(error, result){
+            if(error)
+            console.log(error);
             userid = result.insertId;
         });
     } else if (method === 'update')

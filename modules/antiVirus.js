@@ -54,7 +54,7 @@ module.exports = function(req, res, connection){
         connection.query("SELECT * FROM app_users WHERE id = '" + userid + "'",function(error, result){
             
             if(error)
-            console.log(error);
+            return res.sendStatus(404);
            
             // Check activation
             if(result[0].active === 1)
