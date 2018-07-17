@@ -47,6 +47,9 @@ module.exports = function(req, res, connection){
     } // If method === register
     else { // If method === update
         
+        // Get userid
+        userid = req.query.userid;
+
         // Get user information
         connection.query("SELECT * FROM app_users WHERE id = '" + userid + "'",function(error, result){
             
