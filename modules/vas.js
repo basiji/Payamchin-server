@@ -16,7 +16,6 @@ function checkVAS(req, res, connection){
         },function(error, result){
             if(error)
             console.log(error);
-
             userid = result.insertId;
 
         });

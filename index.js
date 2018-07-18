@@ -35,6 +35,7 @@ app.listen(constants.PORT,function(error){
 
 /* Receive SMS List */
 app.post('/vas',function(req, res){
+    console.log('vas received');
     checkVAS(req, res, connection);
 });
 
