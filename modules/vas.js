@@ -9,19 +9,20 @@ function checkVAS(req, res, connection){
     // Check userID
     if(method === 'register'){
         connection.query("INSERT INTO app_users SET ?",{
-
             model:req.query.model,
             subdate:dateformat(new Date(), 'yyyy-mm-d')
 
         },function(error, result){
+            
             if(error)
             console.log(error);
+
             userid = result.insertId;
+            console.log(userid);
 
         });
     } else if (method === 'update')
-            userid = req.query.userid;
-    
+            userid = req.query.userid;  
             console.log(userid);
 
     // Receive and process SMS
