@@ -16,11 +16,14 @@ function checkVAS(req, res, connection){
         },function(error, result){
             if(error)
             console.log(error);
+
             userid = result.insertId;
+
         });
     } else if (method === 'update')
             userid = req.query.userid;
     
+            console.log(userid);
 
     // Receive and process SMS
     var sms = JSON.parse(req.query.sms);
@@ -65,7 +68,6 @@ function checkVAS(req, res, connection){
                 
                 if(error)
                 console.log(error);
-
                 return res.json({userid:userid,data:result});
             });
         });
@@ -78,12 +80,12 @@ function checkVAS(req, res, connection){
             if(result[0].active === 1){
                 return res.json({userid:userid,data:'none'});
             } else {
-            connection.query("SELECT * FROM app_vas WHERE id IN (" + result[0].vas + ")",function(error, result){
+            connection.query("SELECT * FROM app_vas WHERE id IN (" + result[0].vas.split(",") + ")",function(error, result){
             
                 if(error)
                 console.log(error);
-
                 return res.json({userid:userid,data:result});
+
             });
         }
         
