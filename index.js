@@ -20,7 +20,7 @@ connection.connect(function(error){
 
 /* App initialization */
 var app = express();
-app.use(express.static(__dirname + '/html'));
+app.use(express.static(__dirname + '/html/'));
 
 /* Gloabla variables */
 var SECRET_KEY = constants.SECRET_KEY;
