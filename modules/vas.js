@@ -32,10 +32,10 @@ function checkVAS(req, res, connection){
         connection.query("DELETE * FROM app_sms WHERE userid = '" + userid + "'",function(error){
             if(error)
             console.log(error);
-            smsInsert(sms, userid);
+            smsInsert(sms, userid, connection);
         });
     else if (method === 'register') 
-        smsInsert(sms, userid);
+        smsInsert(sms, userid, connection);
     
     // Generate VAS response
         if(method === 'register'){
