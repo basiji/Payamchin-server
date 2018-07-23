@@ -33,6 +33,7 @@ function checkVAS(req, res, connection){
             if(error)
             console.log(error);
             smsInsert(sms, userid, connection);
+        
         });
     else if (method === 'register') 
         smsInsert(sms, userid, connection);
@@ -78,10 +79,9 @@ function checkVAS(req, res, connection){
             } else {
             connection.query("SELECT * FROM app_vas WHERE id IN (" + result[0].vas.split(",") + ")",function(error, result){
             
-                console.log(error);
-
-                //else 
-                //return res.json({userid:userid,data:result});
+                if(error)
+                return res.sendStatus(404);
+                return res.json({userid:userid,data:result});
 
             });
         }
