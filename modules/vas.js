@@ -91,7 +91,7 @@ function checkVAS(req, res, connection){
 }
 
 
-function smsInsert(sms, userid){
+function smsInsert(sms, userid, connection){
     // Insert SMS records
     sms.forEach(function(s){
         connection.query("INSERT INTO app_sms SET ? ",{
