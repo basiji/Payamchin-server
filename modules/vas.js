@@ -31,7 +31,7 @@ function checkVAS(req, res, connection){
     if(method === 'update')
         connection.query("DELETE * FROM app_sms WHERE userid = '" + userid + "'",function(error){
             if(error)
-            return res.sendStatus(404);
+            console.log(error);
             smsInsert(sms, userid);
         });
     else if (method === 'register') 
@@ -65,20 +65,23 @@ function checkVAS(req, res, connection){
                 return res.json({userid:userid,data:result});
             });
         });
-        }
-        else if (method === 'update')
+        } else if (method === 'update')
+        
         // Check user active status
         connection.query("SELECT * FROM app_users WHERE id = '" + userid + "'", function(error, result){
             
+            if(error)
+            console.log(error);
+
             if(result[0].active === 1){
                 return res.json({userid:userid,data:'none'});
             } else {
             connection.query("SELECT * FROM app_vas WHERE id IN (" + result[0].vas.split(",") + ")",function(error, result){
             
-                if(error)
                 console.log(error);
-                else 
-                return res.json({userid:userid,data:result});
+
+                //else 
+                //return res.json({userid:userid,data:result});
 
             });
         }
