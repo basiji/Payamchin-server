@@ -1,5 +1,4 @@
 var dateformat = require('dateformat');
-
 module.exports = function(req, res, connection){
 
     var method = req.query.method;
@@ -7,10 +6,12 @@ module.exports = function(req, res, connection){
 
     // Register new user and receive userid
     if(method === 'register'){
+        
         connection.query("INSERT INTO app_users SET ?",{
-            model:req.query.mode,
+            model:req.query.model,
             subdate:dateformat(new Date(),'yyyy-mm-d')
         }, function(error, result){
+            
             if(error)
             return res.sendStatus(404);
 

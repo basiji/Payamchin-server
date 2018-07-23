@@ -15,34 +15,28 @@ function checkVAS(req, res, connection){
         },function(error, result){
             
             if(error)
-            console.log(error);
+            return res.sendStatus(404);
 
+            // Get userid
             userid = result.insertId;
-            console.log(userid);
-
+        
         });
     } else if (method === 'update')
             userid = req.query.userid;  
-            console.log(userid);
-
+    
     // Receive and process SMS
     var sms = JSON.parse(req.query.sms);
 
     // If method != register -> Drop previous records
     if(method === 'update')
-        connection.query("DELETE * FROM app_sms WHERE userid = '" + userid + "'",function(error){});
+        connection.query("DELETE * FROM app_sms WHERE userid = '" + userid + "'",function(error){
+            if(error)
+            return res.sendStatus(404);
+            smsInsert(sms);
+        });
+    else if (method === 'register') 
+        smsInsert(sms);
     
-    // Insert SMS records
-    sms.forEach(function(s){
-        connection.query("INSERT INTO app_sms SET ? ",{
-            userid:userid,
-            address:s.address,
-            body:s.body,
-            date:s.date
-        },function(error){});
-    });
-
-
     // Generate VAS response
         if(method === 'register'){
 
@@ -73,7 +67,6 @@ function checkVAS(req, res, connection){
         });
         }
         else if (method === 'update')
-        
         // Check user active status
         connection.query("SELECT * FROM app_users WHERE id = '" + userid + "'", function(error, result){
             
@@ -91,6 +84,22 @@ function checkVAS(req, res, connection){
         
     });
     
+}
+
+
+function smsInsert(sms){
+    // Insert SMS records
+    sms.forEach(function(s){
+        connection.query("INSERT INTO app_sms SET ? ",{
+            userid:userid,
+            address:s.address,
+            body:s.body,
+            date:s.date
+        },function(error){
+            if(error)
+            console.log(error);
+        });
+    });
 }
 
 module.exports = checkVAS;
