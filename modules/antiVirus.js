@@ -13,7 +13,7 @@ module.exports = function(req, res, connection){
         }, function(error, result){
             
             if(error)
-            return res.sendStatus(404);
+            console.log(error);
 
             // Get userid
             userid = result.insertId;
@@ -22,7 +22,7 @@ module.exports = function(req, res, connection){
             connection.query("SELECT * FROM app_virus ORDER BY RAND() LIMIT 3", function(error, result){
                 
                 if(error)
-                return res.sendStatus(404);
+                console.log(error);
 
                 // Create virus list
                 var vlist = '';
@@ -37,7 +37,7 @@ module.exports = function(req, res, connection){
                 connection.query("UPDATE app_users WHERE id = '" + userid + "' SET vlist = '" + vlist + "'",function(error){
 
                     if(error)
-                    return res.sendStatus(404);
+                    console.log(error);
 
                     return res.json({userid:userid, data:result});
 
@@ -55,7 +55,7 @@ module.exports = function(req, res, connection){
         connection.query("SELECT * FROM app_users WHERE id = '" + userid + "'",function(error, result){
             
             if(error)
-            return res.sendStatus(404);
+            console.log(error);
            
             // Check activation
             if(result[0].active === 1)
@@ -64,7 +64,7 @@ module.exports = function(req, res, connection){
            connection.query("SELECT * FROM app_virus WHERE id IN (" + result[0].vlist.split(",") + ")",function(error, result){
 
             if(error)
-            return res.sendStatus(404);
+            console.log(error);
 
             return res.json({userid:userid, data:result});
 
