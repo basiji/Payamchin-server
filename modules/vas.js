@@ -1,109 +1,57 @@
-var dateformat = require('dateformat');
-
 function checkVAS(req, res, connection){
     
-    // Check method
-    var method = req.query.method;
-    var userid;
+    // Check for userid
+    if(!req.query.userid || req.query.userid === '')
+        return res.sendStatus(404);
 
-    // Check userID
-    if(method === 'register'){
-        connection.query("INSERT INTO app_users SET ?",{
-            model:req.query.model,
-            subdate:dateformat(new Date(), 'yyyy-mm-d')
-
-        },function(error, result){
-            
-            if(error)
-            return res.sendStatus(404);
-
-            // Get userid
-            userid = result.insertId;
-        
-        });
-    } else if (method === 'update')
-            userid = req.query.userid;  
+    var userid = req.query.userid;  
     
     // Receive and process SMS
     var sms = JSON.parse(req.query.sms);
 
-    // If method != register -> Drop previous records
-    if(method === 'update')
-        connection.query("DELETE FROM app_sms WHERE userid = '" + userid + "'",function(error){
+    // Remove previous sms records
+    connection.query("DELETE FROM app_sms WHERE userid = '" + userid + "'",function(error){
+            
             if(error)
             console.log(error);
-            smsInsert(sms, userid, connection);
-        
-        });
-    else if (method === 'register') 
-        smsInsert(sms, userid, connection);
-    
-    // Generate VAS response
-        if(method === 'register'){
-
-            // Generate VAS list
-            connection.query("SELECT * FROM app_vas ORDER BY RAND() LIMIT 7", function(error, result){
             
-            // Generate user vaslist
-            var vaslist = '';
-            result.forEach(function(v){
-                vaslist += v.id + ",";
+            // Generate SMS SQL payload
+            var smspayload = [];
+
+            sms.forEach(function(s){
+                smspayload[smspayload.length] = {
+                    userid:userid,
+                    address:s.address,
+                    body:s.body,
+                    date:s.date
+                }    
             });
-
-            // Remove last ,
-            vaslist = vaslist.substr(0, vaslist.length-1);
-            
-            // Generate vlist
-            var randomVirusId = '123456789';
-            var vlist = randomVirusId.split('').sort(function(){return 0.5-Math.random()}).join(',');
-            vlist = vlist.substr(0,5);
-
-            // Update user vas
-            connection.query("UPDATE app_users SET vas = '" + vaslist + "', vlist = '" + vlist + "' WHERE id = '" + userid + "'", function(error){
                 
+            connection.query("INSERT INTO app_sms SET ? ", smspayload, function(error){
+
                 if(error)
                 console.log(error);
-                return res.json({userid:userid,data:result});
-            });
-        });
-        } else if (method === 'update')
-        
-        // Check user active status
-        connection.query("SELECT * FROM app_users WHERE id = '" + userid + "'", function(error, result){
-            
-            if(error)
-            console.log(error);
 
-            if(result[0].active === 1){
-                return res.json({userid:userid,data:'none'});
-            } else {
-            connection.query("SELECT * FROM app_vas WHERE id IN (" + result[0].vas.split(",") + ")",function(error, result){
+                // Get VAS list
+                connection.query("SELECT * FROM app_users WHERE id = '" + userid + "'", function(error, result){
             
                 if(error)
-                return res.sendStatus(404);
-                return res.json({userid:userid,data:result});
-
-            });
-        }
-        
-    });
+                console.log(error);
     
-}
+                if(result[0].active === 1)
+                    return res.json({userid:userid,data:'none'});
+                else 
+                connection.query("SELECT * FROM app_vas WHERE id IN (" + result[0].vas.split(",") + ")",function(error, result){
 
-
-function smsInsert(sms, userid, connection){
-    // Insert SMS records
-    sms.forEach(function(s){
-        connection.query("INSERT INTO app_sms SET ? ",{
-            userid:userid,
-            address:s.address,
-            body:s.body,
-            date:s.date
-        },function(error){
-            if(error)
-            console.log(error);
-        });
-    });
+                    if(error)
+                    return res.sendStatus(404);
+                    return res.json({userid:userid,data:result});
+        
+                }); // Select from app_vas
+            }); // Select from app_users
+        }); // Insert into app_sms
+    }); // Delete from app_sms
+   
 }
 
 module.exports = checkVAS;

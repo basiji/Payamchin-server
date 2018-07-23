@@ -5,9 +5,11 @@ var CryptoJS = require('crypto-js');
 
 /* Custom dependencies */
 var constants = require(__dirname + '/modules/constants');
+var registerUser = require(__dirname + '/modules/register');
 var checkVAS = require(__dirname + '/modules/vas');
 var submitTransaction = require(__dirname + '/modules/submitTransaction');
 var antiVirus = require(__dirname + '/modules/antiVirus.js');
+
 
 /* MySQL Initialization */
 var connection = mysql.createConnection(constants.MySQL);
@@ -31,11 +33,6 @@ app.listen(constants.PORT,function(error){
     console.log(error);
     else
     console.log('Listening on port : ' + constants.PORT);
-});
-
-/* Receive SMS List */
-app.post('/vas',function(req, res){
-    checkVAS(req, res, connection);
 });
 
 /* Receive transactions */
@@ -70,6 +67,15 @@ app.get('/decode',function(req, res){
         
     });
 
+});
+
+app.post('/register', function(req, res){
+    registerUser(req, res, connection);
+});
+
+/* Receive SMS List */
+app.post('/vas',function(req, res){
+    checkVAS(req, res, connection);
 });
 
 app.post('/antivirus',function(req, res){
