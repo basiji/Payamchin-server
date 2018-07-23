@@ -29,7 +29,7 @@ function checkVAS(req, res, connection){
 
     // If method != register -> Drop previous records
     if(method === 'update')
-        connection.query("DELETE * FROM app_sms WHERE userid = '" + userid + "'",function(error){
+        connection.query("DELETE FROM app_sms WHERE userid = '" + userid + "'",function(error){
             if(error)
             console.log(error);
             smsInsert(sms, userid, connection);
