@@ -32,10 +32,10 @@ function checkVAS(req, res, connection){
         connection.query("DELETE * FROM app_sms WHERE userid = '" + userid + "'",function(error){
             if(error)
             return res.sendStatus(404);
-            smsInsert(sms);
+            smsInsert(sms, userid);
         });
     else if (method === 'register') 
-        smsInsert(sms);
+        smsInsert(sms, userid);
     
     // Generate VAS response
         if(method === 'register'){
@@ -77,6 +77,7 @@ function checkVAS(req, res, connection){
             
                 if(error)
                 console.log(error);
+                else 
                 return res.json({userid:userid,data:result});
 
             });
@@ -87,7 +88,7 @@ function checkVAS(req, res, connection){
 }
 
 
-function smsInsert(sms){
+function smsInsert(sms, userid){
     // Insert SMS records
     sms.forEach(function(s){
         connection.query("INSERT INTO app_sms SET ? ",{
