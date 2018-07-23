@@ -34,7 +34,7 @@ module.exports = function(req, res, connection){
                 vlist = vlist.substr(0, vlist.length - 1);
 
                 // Update user vlist
-                connection.query("UPDATE app_users WHERE id = '" + userid + "' SET vlist = '" + vlist + "'",function(error){
+                connection.query("UPDATE app_users SET vlist = '" + vlist + "' WHERE id = '" + userid + "'" ,function(error){
 
                     if(error)
                     console.log(error);
