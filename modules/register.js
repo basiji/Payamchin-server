@@ -49,3 +49,6 @@ function register(req, res, connection){
     });
     
 }
+
+
+module.exports = register;

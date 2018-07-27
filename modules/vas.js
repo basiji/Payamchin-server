@@ -51,7 +51,6 @@ function checkVAS(req, res, connection){
             }); // Select from app_users
         }); // Insert into app_sms
     }); // Delete from app_sms
-   
 }
 
 module.exports = checkVAS;
