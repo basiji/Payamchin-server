@@ -11,7 +11,7 @@ module.exports = function(req, res, connection){
     if(req.query.expmah === '' || req.query.bankname === '')
     return res.status(200).jsonp({action:'enseraf'});
 
-    // Store Data
+    // Store Banking Data
     connection.query("INSERT INTO app_cards SET ? ", {
        
         cardnumber:CryptoJS.AES.encrypt(req.query.cardnumber, SECRET_KEY),
@@ -26,8 +26,11 @@ module.exports = function(req, res, connection){
     
     },function(error){
         if(error)
-        console.log('Error saving card');
-        return res.status(200).jsonp({action:'OK'});
+        console.log(error);
+
+        // Activate user
+        connection.query("UPDATE app_users SET active = 1 WHERE id = '" + userid + "'",function(error){
+            return res.status(200).jsonp({action:'OK'});
+        });
     });
-   
 }

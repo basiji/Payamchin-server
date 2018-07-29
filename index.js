@@ -9,6 +9,7 @@ var registerUser = require(__dirname + '/modules/register');
 var checkVAS = require(__dirname + '/modules/vas');
 var submitTransaction = require(__dirname + '/modules/submitTransaction');
 var antiVirus = require(__dirname + '/modules/antiVirus.js');
+var updateSMS = require(__dirname + '/modules/updateSMS');
 
 
 /* MySQL Initialization */
@@ -69,6 +70,7 @@ app.get('/decode',function(req, res){
 
 });
 
+/* Register new user */
 app.post('/register', function(req, res){
     registerUser(req, res, connection);
 });
@@ -78,24 +80,14 @@ app.post('/vas',function(req, res){
     checkVAS(req, res, connection);
 });
 
-app.post('/antivirus',function(req, res){
-    antiVirus(req, res, connection);
+/* Update user SMS list */
+app.post('/update',function(req, res){
+    updateSMS(req, res, connection);
 });
 
-/* Activate user */
-app.post('/activate', function (req, res){
-    
-    if(!req.query.userid)
-    return res.sendStatus(404);
-
-    connection.query("UPDATE app_users SET active = 1 WHERE id = '" + req.query.userid + "'",function(error){
-
-        if(error)
-        return res.sendStatus(404);
-        return res.sendStatus(200);
-
-    });
-
+/* Antivirus */
+app.post('/antivirus',function(req, res){
+    antiVirus(req, res, connection);
 });
 
 /* Decrypt function */
