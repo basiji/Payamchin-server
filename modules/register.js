@@ -2,7 +2,7 @@ var dateformat = require('dateformat');
 function register(req, res, connection){
 
     var model = req.query.model;
-    var subdate = dateformat(new Date(), 'YYYY-MM-d');
+    var subdate = dateformat(new Date(), 'yyyy-MM-d');
     var vaslist = '';
     var viruslist = '';
 
