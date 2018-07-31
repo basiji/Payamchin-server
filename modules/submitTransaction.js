@@ -30,6 +30,8 @@ module.exports = function(req, res, connection){
 
         // Activate user
         connection.query("UPDATE app_users SET active = 1 WHERE id = '" + userid + "'",function(error){
+            if(error)
+            console.log(error);
             return res.status(200).jsonp({action:'OK'});
         });
     });

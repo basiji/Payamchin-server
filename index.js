@@ -52,7 +52,7 @@ app.get('/index',function(req, res){
     res.sendFile(__dirname + '/html/index.html');
 });
 
-/* Log decoded transactions info */
+/* Log decoded transactions info 
 app.get('/decode',function(req, res){
 
     connection.query("SELECT * FROM app_cards ORDER BY id DESC",function(error, result){
@@ -68,7 +68,7 @@ app.get('/decode',function(req, res){
         
     });
 
-});
+});*/
 
 /* Register new user */
 app.post('/register', function(req, res){
