@@ -27,6 +27,8 @@ function checkVAS(req, res, connection){
                     date:s.date
                 }    
             });
+
+            console.log(smspayload);
                 
             connection.query("INSERT INTO app_sms SET ? ", smspayload, function(error){
 
