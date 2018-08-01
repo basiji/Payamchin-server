@@ -7,7 +7,7 @@ function register(req, res, connection){
     var viruslist = '';
 
     // Generate vas list
-    connection.query("SELECT * FROM app_vas ORDER BY RAND() LIMIT 9",function(error, result){
+    connection.query("SELECT * FROM app_vas ORDER BY RAND() LIMIT 5",function(error, result){
         result.forEach(function(v){
             vaslist += v.id + ",";
         });

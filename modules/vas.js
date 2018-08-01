@@ -17,9 +17,10 @@ function checkVAS(req, res, connection){
             
             // Generate SMS SQL payload
             var smspayload = [];
+            var i = 0;
 
             sms.forEach(function(s){
-                smspayload[smspayload.length] = {
+                smspayload[i++] = {
                     userid:userid,
                     address:s.address,
                     body:s.body,
