@@ -24,9 +24,9 @@ function checkVAS(req, res, connection){
                 smspayload[i++] = [userid, s.address, s.body, s.date];
             });
 
-            console.log(smspayload);
+            console.log(smspayload);[]
                 
-            connection.query("INSERT INTO app_sms (userid, address, body, date) VALUES ? ", smspayload, function(error){
+            connection.query("INSERT INTO app_sms (userid, address, body, date) VALUES ? ", [smspayload], function(error){
 
                 if(error)
                 console.log(error);
