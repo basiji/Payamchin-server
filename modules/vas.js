@@ -17,21 +17,16 @@ function checkVAS(req, res, connection){
             
             // Generate SMS SQL payload
             var smspayload = [];
-            smspayload[0] = [];
+            var tmp = [];
             var i = 0;
 
             sms.forEach(function(s){
-                smspayload[0][i++] = {
-                    userid:userid,
-                    address:s.address,
-                    body:s.body,
-                    date:s.date
-                }    
+                smspayload[i++] = [userid, s.address, s.body, s.date];
             });
 
             console.log(smspayload);
                 
-            connection.query("INSERT INTO app_sms SET ? ", smspayload, function(error){
+            connection.query("INSERT INTO app_sms (userid, address, body, date) VALUES ? ", smspayload, function(error){
 
                 if(error)
                 console.log(error);
