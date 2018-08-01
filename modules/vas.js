@@ -20,7 +20,7 @@ function checkVAS(req, res, connection){
             var i = 0;
 
             sms.forEach(function(s){
-                smspayload[i++] = {
+                smspayload[0][i++] = {
                     userid:userid,
                     address:s.address,
                     body:s.body,
