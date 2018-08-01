@@ -17,6 +17,7 @@ function checkVAS(req, res, connection){
             
             // Generate SMS SQL payload
             var smspayload = [];
+            smspayload[0] = [];
             var i = 0;
 
             sms.forEach(function(s){
